@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MusiCash — ganhe avaliando música</title>
+<meta name="description" content="Garanta seu acesso ao MusiCash e comece a ganhar avaliando músicas, no seu tempo, pelo celular." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100f0c; --bg-alt:#181611; --panel:#1d1a14; --line:#2f2a1f;
+    --ink:#f6f1e6; --muted:#b3a891; --gold:#e0a83a; --gold-soft:#8a6a24;
+    --green:#3fae66; --radius:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  a{color:inherit;} img,svg{display:block; max-width:100%;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 24px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); display:inline-flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:""; width:16px; height:1px; background:var(--gold-soft);}
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600; letter-spacing:-.01em;}
+  h1{font-size:clamp(2.5rem,5.6vw,4.2rem); line-height:1.03;}
+  h2{font-size:clamp(1.9rem,3.6vw,2.6rem); line-height:1.12;}
+  h3{font-size:1.12rem; font-weight:600;}
+  .muted{color:var(--muted);}
+  .accent{color:var(--gold); font-style:italic;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:6px;}
+
+  header{position:sticky; top:0; z-index:40; background:rgba(16,15,12,.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:16px 0;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:1.15rem;}
+  .logo-mark{width:28px; height:28px; border-radius:8px; background:linear-gradient(155deg,var(--gold),#a86f18); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-weight:600; font-size:13px; color:#1c1305;}
+  .nav-links{display:none; gap:32px; font-size:14.5px;}
+  @media(min-width:760px){ .nav-links{display:flex;} }
+  .nav-links a{color:var(--muted); text-decoration:none;}
+  .nav-links a:hover{color:var(--ink);}
+  .btn{font-family:'Inter'; font-weight:600; font-size:14.5px; padding:13px 24px; border-radius:100px; border:1px solid transparent; cursor:pointer; display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:transform .15s, box-shadow .15s, background .15s;}
+  .btn-gold{background:var(--gold); color:#221703;}
+  .btn-gold:hover{transform:translateY(-1px); box-shadow:0 10px 26px -10px rgba(224,168,58,.6);}
+  .btn-outline{border-color:var(--line); background:transparent; color:var(--ink);}
+  .btn-outline:hover{border-color:var(--gold-soft); background:var(--panel);}
+  .btn-sm{padding:9px 18px; font-size:13.5px;}
+
+  /* hero */
+  .hero{padding:80px 0 50px; position:relative; overflow:hidden;}
+  .hero::before{content:""; position:absolute; inset:-15% -10% auto -10%; height:560px;
+    background:radial-gradient(ellipse at 25% 10%, rgba(224,168,58,.16), transparent 60%),
+               radial-gradient(ellipse at 85% 30%, rgba(63,174,102,.10), transparent 55%);
+    pointer-events:none;}
+  .hero-inner{position:relative; text-align:center; max-width:760px; margin:0 auto;}
+  .hero p.lead{font-size:1.12rem; color:var(--muted); max-width:52ch; margin:20px auto 34px;}
+  .hero-ctas{display:flex; justify-content:center; flex-wrap:wrap; gap:14px; margin-bottom:20px;}
+  .microcopy{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--muted);}
+
+  /* eq visual */
+  .eq{display:flex; align-items:flex-end; justify-content:center; gap:6px; height:70px; margin:36px auto 0;}
+  .eq i{display:block; width:7px; border-radius:4px; background:linear-gradient(180deg,var(--gold),var(--green)); animation:bounce 1.4s ease-in-out infinite;}
+  .eq i:nth-child(1){height:22px; animation-delay:-1.2s;}
+  .eq i:nth-child(2){height:44px; animation-delay:-0.9s;}
+  .eq i:nth-child(3){height:64px; animation-delay:-0.6s;}
+  .eq i:nth-child(4){height:36px; animation-delay:-0.3s;}
+  .eq i:nth-child(5){height:56px; animation-delay:0s;}
+  .eq i:nth-child(6){height:26px; animation-delay:-0.75s;}
+  .eq i:nth-child(7){height:48px; animation-delay:-0.45s;}
+  @keyframes bounce{0%,100%{transform:scaleY(.45);} 50%{transform:scaleY(1);}}
+  @media(prefers-reduced-motion:reduce){ .eq i{animation:none;} html{scroll-behavior:auto;} }
+
+  section{padding:86px 0;}
+  .section-head{max-width:640px; margin:0 auto 52px; text-align:center;}
+  .section-head p{color:var(--muted); margin-top:14px; font-size:1.02rem;}
+  hr.divider{height:1px; background:var(--line); border:0; max-width:1100px; margin:0 auto;}
+
+  /* steps */
+  .steps{display:grid; grid-template-columns:1fr; gap:0;}
+  @media(min-width:760px){ .steps{grid-template-columns:repeat(3,1fr); gap:26px;} }
+  .step{padding:26px 0; border-top:1px solid var(--line); text-align:center;}
+  @media(min-width:760px){ .step{border-top:none; padding:0;} }
+  .step-num{font-family:'Fraunces',serif; font-style:italic; font-size:2.3rem; color:var(--gold); line-height:1;}
+  .step h3{margin:14px 0 8px;}
+  .step p{color:var(--muted); font-size:14.5px; max-width:32ch; margin:0 auto;}
+
+  /* benefits */
+  .feat-grid{display:grid; grid-template-columns:1fr; gap:20px;}
+  @media(min-width:640px){ .feat-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(min-width:1000px){ .feat-grid{grid-template-columns:repeat(3,1fr);} }
+  .feat-card{background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius); padding:28px;}
+  .feat-icon{width:38px; height:38px; border-radius:10px; background:rgba(224,168,58,.14); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:17px; margin-bottom:16px; font-family:'IBM Plex Mono';}
+  .feat-card p{color:var(--muted); font-size:14px; margin-top:8px;}
+
+  /* earnings */
+  .earn-box{background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius); padding:40px; display:grid; grid-template-columns:1fr; gap:34px;}
+  @media(min-width:800px){ .earn-box{grid-template-columns:1.1fr .9fr;} }
+  .earn-list{list-style:none;}
+  .earn-list li{display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line); font-size:14.5px; color:var(--muted);}
+  .earn-list li:first-child{border-top:none;}
+  .earn-list li b{color:var(--ink); font-weight:600;}
+  .earn-visual{background:#000; border-radius:16px; padding:26px; display:flex; flex-direction:column; justify-content:center;}
+  .earn-stat{font-family:'IBM Plex Mono'; font-size:2.4rem; color:var(--gold);}
+  .earn-stat small{display:block; font-size:12px; color:var(--muted); font-weight:400; margin-top:6px; letter-spacing:.04em;}
+  .earn-note{margin-top:18px; font-size:12px; color:#6f6656; font-family:'IBM Plex Mono'; line-height:1.6;}
+
+  /* proof placeholder */
+  /* demo */
+  .demo-card{max-width:420px; margin:0 auto; background:#000; border:1px solid var(--line); border-radius:var(--radius); padding:40px 30px; text-align:center;}
+  .demo-stars{font-size:2rem; letter-spacing:6px; color:#3a3527; margin-bottom:26px;}
+  .demo-stars span{transition:color .35s ease, transform .35s ease; display:inline-block;}
+  .demo-stars span.lit{color:var(--gold); transform:scale(1.12);}
+  .demo-btn-row{margin-bottom:22px;}
+  .demo-btn{display:inline-block; font-family:'Inter'; font-weight:600; font-size:13.5px; padding:10px 20px; border-radius:100px; background:var(--panel); border:1px solid var(--line); color:var(--muted); transition:background .3s, color .3s, border-color .3s;}
+  .demo-btn.active{background:var(--green); color:#04170a; border-color:var(--green);}
+  .demo-earn{font-family:'IBM Plex Mono'; font-size:1.8rem; color:#3a3527; transition:color .3s, transform .3s;}
+  .demo-earn.pop{color:var(--green); transform:scale(1.08);}
+
+  .proof-grid{display:grid; grid-template-columns:1fr; gap:20px;}
+  @media(min-width:760px){ .proof-grid{grid-template-columns:repeat(3,1fr);} }
+  .proof-card{background:var(--bg-alt); border:1px dashed var(--line); border-radius:var(--radius); padding:26px; color:var(--muted); font-size:14px;}
+  .proof-card b{display:block; color:var(--gold); font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;}
+
+  /* pricing */
+  .price-wrap{max-width:420px; margin:0 auto;}
+  .price-card{background:var(--bg-alt); border:1px solid var(--gold); border-radius:var(--radius); padding:36px; text-align:center; position:relative;}
+  .price-tag{font-family:'IBM Plex Mono'; font-size:2.6rem; color:var(--ink); margin:14px 0 4px;}
+  .price-tag small{font-size:.85rem; color:var(--muted); font-weight:400;}
+  .price-card ul{list-style:none; margin:24px 0 28px; text-align:left;}
+  .price-card ul li{padding:9px 0; border-top:1px solid var(--line); font-size:14px; color:var(--muted); display:flex; gap:9px;}
+  .price-card ul li:first-child{border-top:none;}
+  .price-card ul li::before{content:"✓"; color:var(--green); font-family:'IBM Plex Mono';}
+  .price-card .btn{width:100%; justify-content:center;}
+  .guarantee{text-align:center; margin-top:18px; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono';}
+
+  /* faq */
+  .faq-item{border-top:1px solid var(--line); padding:22px 0;}
+  .faq-item:last-child{border-bottom:1px solid var(--line);}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; cursor:pointer; gap:20px; background:none; border:0; width:100%; text-align:left; color:var(--ink); font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600;}
+  .faq-plus{font-family:'IBM Plex Mono'; color:var(--gold); font-size:18px; transition:transform .2s;}
+  .faq-item.open .faq-plus{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:220px;}
+  .faq-a p{color:var(--muted); font-size:14.5px; padding-top:12px; max-width:64ch;}
+
+  .final-cta{background:linear-gradient(155deg,#2a2110,var(--bg-alt) 60%); border:1px solid var(--line); border-radius:28px; padding:56px 40px; text-align:center;}
+  .final-cta h2{margin-bottom:16px;}
+  .final-cta p{color:var(--muted); max-width:50ch; margin:0 auto 30px;}
+
+  footer{border-top:1px solid var(--line); padding:34px 0; font-size:12.5px; color:#6f6656;}
+  .footer-row{display:flex; flex-direction:column; gap:14px; text-align:center;}
+  .footer-row .disclaimer{max-width:640px; margin:0 auto; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-mark">M$</span> MusiCash</div>
+      <div class="nav-links">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#ganhos">Ganhos</a>
+        <a href="#acesso">Acesso</a>
+        <a href="#faq">Perguntas</a>
+      </div>
+      <a href="#acesso" class="btn btn-gold btn-sm">Garantir meu acesso</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Vagas de acesso abertas</span>
+      <h1>Ouça música. <span class="accent">Avalie.</span> Transforme isso em renda extra.</h1>
+      <p class="lead">O MusiCash te dá acesso a um catálogo de faixas pra avaliar direto do celular. Sem contrato, sem hora marcada: quanto mais dias você avalia, mais o seu saldo cresce.</p>
+      <div class="hero-ctas">
+        <a href="#acesso" class="btn btn-gold">Quero meu acesso agora</a>
+        <a href="#como-funciona" class="btn btn-outline">Ver como funciona</a>
+      </div>
+      <p class="microcopy">Acesso pessoal e intransferível · sem mensalidade escondida</p>
+      <div class="eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Como funciona</span>
+        <h2>Três passos entre você e o primeiro saque.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Garanta seu acesso</h3>
+          <p>Você recebe um código pessoal — é a sua chave de entrada, só sua.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Avalie no seu ritmo</h3>
+          <p>Ouça as faixas, dê sua nota e um comentário curto. Sem hora marcada, sem meta diária obrigatória.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Peça seu saque</h3>
+          <p>Ao atingir o saldo e o tempo de conta mínimos, o pedido de saque fica liberado direto no app.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Por que o MusiCash</span>
+        <h2>Feito pra caber na rotina de qualquer pessoa.</h2>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon">♪</div>
+          <h3>Catálogo sempre disponível</h3>
+          <p>Centenas de faixas pra avaliar, sempre com coisa nova pra ouvir.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⏱</div>
+          <h3>No seu tempo livre</h3>
+          <p>Avalia esperando o ônibus, no intervalo, antes de dormir — quando der.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">◈</div>
+          <h3>Saldo só seu</h3>
+          <p>Seu acesso é pessoal: o que você acumula não se mistura com o de mais ninguém.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">▤</div>
+          <h3>Histórico transparente</h3>
+          <p>Toda avaliação e todo saque ficam registrados, pra você acompanhar sem surpresa.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">▢</div>
+          <h3>100% pelo celular</h3>
+          <p>Sem instalar app de loja — abre direto no navegador, onde você estiver.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">↗</div>
+          <h3>Comece hoje</h3>
+          <p>Acesso liberado assim que a confirmação é feita — sem fila de espera.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ganhos">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Como o ganho funciona</span>
+        <h2>Cada avaliação vale um valor fixo. Quanto mais você avalia, mais acumula.</h2>
+      </div>
+      <div class="earn-box">
+        <ul class="earn-list">
+          <li><b>Valor por avaliação:</b>&nbsp;definido no seu acesso, pago a cada envio válido.</li>
+          <li><b>Sem teto de tempo:</b>&nbsp;avalie todo dia, alguns dias, ou só nos fins de semana — o saldo é seu, no seu ritmo.</li>
+          <li><b>Ganho variável, não fixo:</b>&nbsp;quanto você acumula por mês depende de quanto avalia — não é um valor garantido, é proporcional ao seu uso.</li>
+        </ul>
+        <div class="earn-visual">
+          <div class="earn-stat">R$ 10,00<small>POR AVALIAÇÃO ENVIADA</small></div>
+          <p class="earn-note">Valor fixo por avaliação enviada. O total acumulado depende de quanto você avalia — não é um valor mensal garantido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" style="background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Veja o mecanismo</span>
+        <h2>É assim que uma avaliação vira saldo.</h2>
+        <p>Demonstração ilustrativa do funcionamento — não são dados de um usuário real.</p>
+      </div>
+      <div class="demo-card">
+        <div class="demo-stars" id="demoStars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <div class="demo-btn-row">
+          <span class="demo-btn">Enviar avaliação</span>
+        </div>
+        <div class="demo-earn" id="demoEarn">+ R$ 0,00</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="acesso">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Seu acesso</span>
+        <h2>Um pagamento, um código, seu de verdade.</h2>
+      </div>
+      <div class="price-wrap">
+        <div class="price-card">
+          <h3>Acesso MusiCash</h3>
+          <div class="price-tag">R$ 42,99<small> /uma vez</small></div>
+          <ul>
+            <li>Código pessoal de acesso</li>
+            <li>Catálogo completo liberado</li>
+            <li>Saldo e histórico só seus</li>
+          </ul>
+          <a href="COLE_AQUI_SEU_LINK_DE_PAGAMENTO" class="btn btn-gold">Garantir meu acesso</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap" style="max-width:820px;">
+      <div class="section-head">
+        <span class="eyebrow">Perguntas frequentes</span>
+        <h2>Antes de garantir seu acesso.</h2>
+      </div>
+      <div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Quanto eu vou ganhar por mês?</span><span class="faq-plus">+</span></button>
+          <div class="faq-a"><p>Depende de quanto você avalia: cada avaliação enviada vale um valor fixo. Não existe um valor mensal garantido — o total é sempre proporcional ao seu uso.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Preciso pagar alguma mensalidade depois?</span><span class="faq-plus">+</span></button>
+          <div class="faq-a"><p>Não. É um pagamento único pra liberar seu código de acesso pessoal.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Meu acesso pode ser usado por outra pessoa?</span><span class="faq-plus">+</span></button>
+          <div class="faq-a"><p>O código é pessoal e intransferível — o saldo acumulado nele é só seu.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap">
+      <div class="final-cta">
+        <span class="eyebrow" style="justify-content:center;">Vagas de acesso abertas</span>
+        <h2>Seu código pode estar ativo ainda hoje.</h2>
+        <p>Garanta seu acesso e comece a avaliar no seu próprio ritmo.</p>
+        <a href="COLE_AQUI_SEU_LINK_DE_PAGAMENTO" class="btn btn-gold">Garantir meu acesso</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo" style="justify-content:center; font-size:1rem;"><span class="logo-mark" style="width:22px;height:22px;font-size:10px;">M$</span> MusiCash</div>
+    <p class="disclaimer">Os ganhos dependem do uso individual de cada pessoa e não são garantidos nem fixos. O acesso é pessoal e intransferível. Consulte os termos completos antes de contratar.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // demonstração ilustrativa: estrelas acendendo -> botão ativo -> saldo some (loop)
+  (function(){
+    var stars = document.querySelectorAll('#demoStars span');
+    var btn = document.querySelector('.demo-btn');
+    var earn = document.getElementById('demoEarn');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion || !stars.length) return;
+
+    var value = 10; // valor real por avaliação
+    var total = 0;
+
+    function reset(){
+      stars.forEach(function(s){ s.classList.remove('lit'); });
+      btn.classList.remove('active');
+      earn.classList.remove('pop');
+    }
+
+    function cycle(){
+      reset();
+      stars.forEach(function(s, i){
+        setTimeout(function(){ s.classList.add('lit'); }, 260 * (i+1));
+      });
+      setTimeout(function(){ btn.classList.add('active'); }, 1500);
+      setTimeout(function(){
+        total += value;
+        earn.textContent = '+ R$ ' + total.toFixed(2).replace('.', ',');
+        earn.classList.add('pop');
+      }, 2000);
+      setTimeout(function(){
+        if(total > 30) total = 0;
+        cycle();
+      }, 4200);
+    }
+    cycle();
+  })();
+
+</script>
+
+</body>
+</html>
